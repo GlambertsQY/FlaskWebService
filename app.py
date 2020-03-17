@@ -2,6 +2,7 @@ from gensim.models.word2vec import Word2Vec
 from flask import Flask, url_for, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 import json
+import time
 
 app = Flask(__name__)
 
@@ -65,15 +66,20 @@ def question_list():
 @app.route('/questionstandardanswerlist', methods=['POST', 'GET'])
 def question_search():
     l = []
+    sTime = time.time()
     keyword = request.args.get('keyword')
     if keyword != '':
         question_list = db.session.query(Question).join(StandardAnswer).filter(
             Question.text_q.like('%' + keyword + '%')).all()
     else:
-        question_list = db.session.query(Question).join(StandardAnswer).all()
+        question_list = db.session.query(Question).join(StandardAnswer).filter().all()
+
     for i in question_list:
         l.append(
             {'id_q': i.id_q, 'title': i.text_q, 'subject': i.subject, 'standardanswer': i.standardanswers[0].text_s})
+
+    eTime = time.time()
+    print('耗时：' + str(int((eTime - sTime) * 1000)) + 'ms')
     return json.dumps(l, ensure_ascii=False)
 
 
