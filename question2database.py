@@ -12,7 +12,7 @@ class Question(Base):  # 必须继承declaraive_base得到的那个基类
     __tablename__ = "question"  # 必须要有__tablename__来指出这个类对应什么表，这个表可以暂时在库中不存在，SQLAlchemy会帮我们创建这个表
     id_q = Column(Integer, primary_key=True, autoincrement='auto')  # Column类创建一个字段
     text_q = Column(Text,
-                  nullable=False)  # nullable就是决定是否not null，unique就是决定是否unique。。这里假定没人重名，设置index可以让系统自动根据这个字段为基础建立索引
+                    nullable=False)  # nullable就是决定是否not null，unique就是决定是否unique。。这里假定没人重名，设置index可以让系统自动根据这个字段为基础建立索引
     subject = Column(String(20), nullable=False)
 
     standardanswers = relationship('StandardAnswer', backref='questions')
@@ -41,6 +41,7 @@ if __name__ == '__main__':
     str_list = input_file.read().split('\\')
     l1 = []
     l2 = []
+    l3 = []
     for i in str_list:
         i = i.strip()
         try:
@@ -50,6 +51,8 @@ if __name__ == '__main__':
                     l1.append(t[0].split('\t')[1].strip())
                     t[1] = t[1].strip().strip('答：')
                     l2.append(t[1].strip())
+                    t[2] = t[2].strip().strip('错答：')
+                    l3.append(t[2].strip())
         except Exception as e:
             print(i)
 
@@ -57,11 +60,11 @@ if __name__ == '__main__':
     #     question = Question(id_q=i + 1, text_q=l1[i], subject='计算机')
     #     session.add(question)
     #     session.commit()
-    for i in range(0, len(l2)):
-        sa = StandardAnswer(id_s=i + 1, text_s=l2[i], id_q=i + 1)
-        session.add(sa)
-        session.commit()
-    session.close()
+    # for i in range(0, len(l2)):
+    #     sa = StandardAnswer(id_s=i + 1, text_s=l2[i], id_q=i + 1)
+    #     session.add(sa)
+    #     session.commit()
+    # session.close()
     print(engine)
     print(session)
     print('End')

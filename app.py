@@ -38,7 +38,8 @@ class Question(db.Model):  # 必须继承declaraive_base得到的那个基类
                        nullable=False)  # nullable就是决定是否not null，unique就是决定是否unique。。这里假定没人重名，设置index可以让系统自动根据这个字段为基础建立索引
     subject = db.Column(db.String(20), nullable=False)
 
-    standardanswers = db.relationship('StandardAnswer', backref='questions')
+    #这个join完的标答提取特别慢
+    # standardanswers = db.relationship('StandardAnswer', backref='questions')
 
     def __repr__(self):
         return '<Question>{}:{}'.format(self.id_q, self.text_q)
@@ -69,15 +70,17 @@ def question_search():
     sTime = time.time()
     keyword = request.args.get('keyword')
     if keyword != '':
-        question_list = db.session.query(Question).join(StandardAnswer).filter(
-            Question.text_q.like('%' + keyword + '%')).all()
+        question_list = db.session.query(Question, StandardAnswer).filter(Question.id_q == StandardAnswer.id_q,
+                                                                          Question.text_q.like(
+                                                                              '%' + keyword + '%')).all()
     else:
-        question_list = db.session.query(Question).join(StandardAnswer).filter().all()
+        # question_list = db.session.query(Question).join(StandardAnswer).filter().all()
+        question_list = db.session.query(Question, StandardAnswer).filter(Question.id_q == StandardAnswer.id_q).all()
 
     for i in question_list:
         l.append(
-            {'id_q': i.id_q, 'title': i.text_q, 'subject': i.subject, 'standardanswer': i.standardanswers[0].text_s})
-
+            {'id_q': i.Question.id_q, 'title': i.Question.text_q, 'subject': i.Question.subject,
+             'standardanswer': i.StandardAnswer.text_s})
     eTime = time.time()
     print('耗时：' + str(int((eTime - sTime) * 1000)) + 'ms')
     return json.dumps(l, ensure_ascii=False)
