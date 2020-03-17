@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Aliyun" uuid="0bb60058-2e90-4907-b160-99e7861cf5b9">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://106.14.141.128:3306</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Didiyun" uuid="4e9eacbf-5524-4f7a-9c60-3bb7cc8063b0">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://116.85.30.119:3306</jdbc-url>
+    </data-source>
+  </component>
+</project>
