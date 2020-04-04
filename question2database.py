@@ -15,7 +15,7 @@ class Question(Base):  # 必须继承declaraive_base得到的那个基类
                     nullable=False)  # nullable就是决定是否not null，unique就是决定是否unique。。这里假定没人重名，设置index可以让系统自动根据这个字段为基础建立索引
     subject = Column(String(20), nullable=False)
 
-    standardanswers = relationship('StandardAnswer', backref='questions')
+    # standardanswers = relationship('StandardAnswer', backref='questions')
 
     def __repr__(self):
         return '<Question>{}:{}'.format(self.id_q, self.text)

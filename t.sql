@@ -34,9 +34,10 @@ select * from question;
 select * from StandardAnswer;
 select * from question,StandardAnswer where question.id_q= StandardAnswer.id_q;
 select * from user;
-delete  from question where id_q>=201;
-delete from StandardAnswer where id_q>=201;
+delete  from question where id_q>=1;
+delete from StandardAnswer where id_q>=1;
 
-update question set subject = '军事理论' where id_q>=82 and id_q<=169;
-update question set subject = '地理' where id_q>=170;
+update question set subject = '计算机综合' where subject = '计算机';
+update question set subject = '军事理论' where id_q>=30 and id_q<=92;
+update question set subject = '地理' where id_q>=93;
 
