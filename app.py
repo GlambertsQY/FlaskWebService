@@ -155,6 +155,27 @@ class StandardAnswer(db.Model):
         return '<StandardAnswer>{}:{}'.format(self.id_s, self.text_s)
 
 
+class Answer(db.Model):
+    __tablename__ = 'answer'
+    id_a = db.Column(db.Integer, primary_key=True, autoincrement='auto')
+    id_q = db.Column(db.Integer, db.ForeignKey(Question.id_q), nullable=False)
+    text_a = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return '<Answer>{}:{}'.format(self.id_a, self.text_a)
+
+
+class Score(db.Model):
+    __tablename__ = 'score'
+    username = db.Column(db.String(20), db.ForeignKey(User.username), primary_key=True)
+    id_a = db.Column(db.Integer, db.ForeignKey(Answer.id_a), primary_key=True)
+    time = db.Column(db.String(20), nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return '<Score>{}:{}'.format(self.id_a, self.username)
+
+
 @app.route('/questionlist')
 def question_list():
     l = []
@@ -176,7 +197,7 @@ def question_search():
                                                                           '%' + keyword + '%'),
                                                                       Question.subject == subject).all()
     # else:
-    #     # question_list = db.session.query(Question).join(StandardAnswer).filter().all()
+    #     question_list = db.session.query(Question).join(StandardAnswer).filter().all()
     #     question_list = db.session.query(Question, StandardAnswer).filter(Question.id_q == StandardAnswer.id_q).all()
 
     for i in question_list:
@@ -343,21 +364,61 @@ def getPassword():
 
 @app.route('/sendError', methods=['POST', 'GET'])
 def sendError():
-    id_q = request.args.get('id_q')
+    title = request.args.get('title')
     standardanswer = request.args.get('standardanswer')
     answer = request.args.get('answer')
     score = request.args.get('score')
     try:
         file = open(str(time.strftime('%Y_%m_%d_%H%M%S', time.localtime())) + '_sendError.txt', 'w', encoding='utf-8')
-        file.write(id_q + ',' + standardanswer + ',' + answer + ',' + score)
+        file.write(title + ',' + standardanswer + ',' + answer + ',' + score)
         file.close()
     except Exception as e:
         return 'Fail'
     return 'OK'
 
 
+@app.route('/store_answer', methods=['POST', 'GET'])
+def storeAnswer():
+    try:
+        id_a = int(db.session.query(Answer).filter().count() + 1)
+        id_q = int(request.args.get('id_q'))
+        text_a = request.args.get('text_a')
+        username = request.args.get('username')
+        score = request.args.get('score')
+        store_time = str(time.strftime('%Y_%m_%d_%H%M%S', time.localtime()))
+        a = Answer(id_a=id_a, id_q=id_q, text_a=text_a)
+        s = Score(username=username, id_a=id_a, time=store_time, score=score)
+        db.session.add(a)
+        db.session.commit()
+        db.session.add(s)
+        db.session.commit()
+    except Exception as e:
+        return 'Fail'
+    return 'OK'
+
+
+@app.route('/query_answer', methods=['POST', 'GET'])
+def query_answer():
+    l = []
+    subject = request.args.get('subject')
+    keyword = request.args.get('keyword')
+    username = request.args.get('username')
+    answerList = db.session.query(Answer, Question, Score, StandardAnswer).filter(Question.subject == subject,
+                                                                                  Question.text_q.like(
+                                                                                      '%' + keyword + '%'
+                                                                                  ),
+                                                                                  Question.id_q == StandardAnswer.id_q,
+                                                                                  Answer.id_q == Question.id_q,
+                                                                                  Score.id_a == Answer.id_a,
+                                                                                  Score.username == username).all()
+    for i in answerList:
+        l.append({'id_q': i.Question.id_q, 'id_a': i.Answer.id_a, 'title': i.Question.text_q,
+                  'standardanswer': i.StandardAnswer.text_s, 'answer': i.Answer.text_a,
+                  'score': i.Score.score, 'score_time': i.Score.time})
+    return json.dumps(l, ensure_ascii=False)
+
+
 if __name__ == '__main__':
     # print(model.wv.similarity('飞机', '火车'))
-
     db.create_all()
     app.run()
