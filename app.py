@@ -11,7 +11,7 @@ from config import Config as c
 from gensim.models import KeyedVectors
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-wv = KeyedVectors.load(c.wordVectorLocation);
+wv = KeyedVectors.load(c.wordVectorLocation, mmap='r') # mmap，解决内存占用过大问题
 
 app = Flask(__name__)
 
@@ -112,7 +112,7 @@ def sent_most_similarity(s1, s2):
         for j in l2:
             try:
                 # dic_s[int(model.wv.similarity(i, j) * 100)] = i + ' ' + j
-                dic_s[i + ' ' + j] = int(model.wv.similarity(i, j) * 100)
+                dic_s[i + ' ' + j] = int(wv.similarity(i, j) * 100)
             except Exception as e:
                 print(e)
     # dic_s = sorted(dic_s.items(), key=lambda x: x[0], reverse=True)
@@ -241,7 +241,7 @@ def add_questionStandardAnswer():
 @app.route('/userList')
 def user_list():
     # user_list = User.query.all()
-    user_list = User.query.order_by(User.id).all()
+    user_list = User.query.order_by(User.username).all()
     return str(user_list[0].user_name)
 
 
@@ -328,7 +328,7 @@ def word_similarity():
             return json.dumps(s, ensure_ascii=False)
         else:
             try:
-                sim = str(model.wv.similarity(ws1, ws2))
+                sim = str(wv.similarity(ws1, ws2))
                 s = {'status': 'success', 'ws1': ws1, 'ws2': ws2, 'similarity': sim}
             except Exception as e:
                 s = {'status': str(e), 'ws1': ws1, 'ws2': ws2, 'similarity': 0.0}

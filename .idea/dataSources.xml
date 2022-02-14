@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Didiyun" uuid="4e9eacbf-5524-4f7a-9c60-3bb7cc8063b0">
+    <data-source source="LOCAL" name="ALiyun" uuid="7b87e866-cfab-4c85-b132-09ab0714042b">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://116.85.30.119:3306?serverTimezone=UTC</jdbc-url>
+      <jdbc-url>jdbc:mysql://106.15.138.211 :3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
 </project>
