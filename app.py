@@ -242,7 +242,7 @@ def add_questionStandardAnswer():
 def user_list():
     # user_list = User.query.all()
     user_list = User.query.order_by(User.username).all()
-    return str(user_list[0].user_name)
+    return str(user_list[0].username)
 
 
 @app.route('/queryUser', methods=['POST', 'GET'])
