@@ -14,7 +14,7 @@ model = Word2Vec.load('D:\\Document\\GraduationProject\\Project\\Word2VecTest\\M
 app = Flask(__name__)
 
 # 配置flask配置对象中键：SQLALCHEMY_DATABASE_URI
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:Abc123456@106.14.141.128/graduationproject?charset=utf8"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:Abc123456@127.0.0.1/graduationproject?charset=utf8"
 
 # 配置flask配置对象中键：SQLALCHEMY_COMMIT_TEARDOWN,设置为True,应用会自动在每次请求结束后提交数据库中变动
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
