@@ -2,8 +2,9 @@ from sqlalchemy import String, Column, Integer, Text, ForeignKey
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from config import Config as c
 
-engine = create_engine('mysql+pymysql://root:Abc123456@106.14.141.128/graduationproject?charset=utf8')
+engine = create_engine(c.connectString)
 session = sessionmaker(bind=engine)
 Base = declarative_base()
 

@@ -7,14 +7,16 @@ import jieba.posseg as jp
 import numpy as np
 from scipy.linalg import norm
 import logging
+from config import Config as c
+from gensim.models import KeyedVectors
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-model = Word2Vec.load('D:\\Document\\GraduationProject\\Project\\Word2VecTest\\MainPyFile\\wiki_new.model')
+wv = KeyedVectors.load(c.wordVectorLocation);
 
 app = Flask(__name__)
 
 # 配置flask配置对象中键：SQLALCHEMY_DATABASE_URI
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:Abc123456@127.0.0.1/graduationproject?charset=utf8"
+app.config['SQLALCHEMY_DATABASE_URI'] = c.connectString
 
 # 配置flask配置对象中键：SQLALCHEMY_COMMIT_TEARDOWN,设置为True,应用会自动在每次请求结束后提交数据库中变动
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
@@ -48,25 +50,25 @@ def sentSimilarity(s1, s2):
         for key, value in dic.items():
             if value == 'n':
                 try:
-                    v[0] = v[0] + model[key]
+                    v[0] = v[0] + wv[key]
                     v_n[0] = v_n[0] + 1
                 except Exception as e:
                     print(e)
             elif value == 'v':
                 try:
-                    v[1] = v[1] + model[key]
+                    v[1] = v[1] + wv[key]
                     v_n[1] = v_n[1] + 1
                 except Exception as e:
                     print(e)
             elif value == 'a':
                 try:
-                    v[2] = v[2] + model[key]
+                    v[2] = v[2] + wv[key]
                     v_n[2] = v_n[2] + 1
                 except Exception as e:
                     print(e)
             elif value == 'd':
                 try:
-                    v[3] = v[3] + model[key]
+                    v[3] = v[3] + wv[key]
                     v_n[3] = v_n[3] + 1
                 except Exception as e:
                     print(e)
