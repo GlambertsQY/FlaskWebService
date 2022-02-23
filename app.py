@@ -11,7 +11,7 @@ from config import Config as c
 from gensim.models import KeyedVectors
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-wv = KeyedVectors.load(c.wordVectorLocation, mmap='r') # mmap，解决内存占用过大问题
+wv = KeyedVectors.load(c.wordVectorLocation, mmap='r')    # mmap，解决内存占用过大问题
 
 app = Flask(__name__)
 
@@ -25,7 +25,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # 获取SQLAlchemy实例对象，接下来就可以使用对象调用数据
 db = SQLAlchemy(app)
 
-flagList = ['n', 'v', 'a', 'd']
+flagList = ['n', 'v', 'a', 'd']    # 名词，动词，形容词，副词
 sims = [0] * 4
 lam = 0
 s_len = [0] * 2
@@ -177,7 +177,7 @@ class Score(db.Model):
     def __repr__(self):
         return '<Score>{}:{}'.format(self.id_a, self.username)
 
-
+# 无用
 @app.route('/questionlist')
 def question_list():
     l = []
@@ -210,7 +210,7 @@ def question_search():
     print('耗时：' + str(int((eTime - sTime) * 1000)) + 'ms')
     return json.dumps(l, ensure_ascii=False)
 
-
+#无用
 @app.route('/standardanswerlist')
 def standardanswer_list():
     l = []
@@ -237,7 +237,7 @@ def add_questionStandardAnswer():
         return "Fail"
     return "OK"
 
-
+# 无用
 @app.route('/userList')
 def user_list():
     # user_list = User.query.all()
@@ -297,7 +297,7 @@ def user_update():
         return "Fail"
     return "OK"
 
-
+# 无用
 @app.route('/user_delete')
 def user_delete():
     user = User.query.filter_by(id=1).first()
@@ -311,7 +311,7 @@ def user_delete():
 def hello_world():
     return 'https://sub2.ivy.best/osubscribe.php?sid=742&token=oG9t0jNIlBzt'
 
-
+# 无用
 @app.route('/word_similarity', methods=['POST', 'GET'])
 def word_similarity():
     ws1 = ''
