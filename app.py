@@ -123,7 +123,7 @@ def sent_most_similarity(s1, s2):
 
 # 创建模型对象
 class User(db.Model):
-    __tablename__ = "user"
+    __tablename__ = "User"
     username = db.Column(db.String(20), nullable=False, primary_key=True)
     password = db.Column(db.String(20), nullable=False)
     mail = db.Column(db.String(30), nullable=True)
@@ -134,7 +134,7 @@ class User(db.Model):
 
 
 class Question(db.Model):  # 必须继承declaraive_base得到的那个基类
-    __tablename__ = "question"  # 必须要有__tablename__来指出这个类对应什么表，这个表可以暂时在库中不存在，SQLAlchemy会帮我们创建这个表
+    __tablename__ = "Question"  # 必须要有__tablename__来指出这个类对应什么表，这个表可以暂时在库中不存在，SQLAlchemy会帮我们创建这个表
     id_q = db.Column(db.Integer, primary_key=True, autoincrement='auto')  # Column类创建一个字段
     text_q = db.Column(db.Text,
                        nullable=False)  # nullable就是决定是否not null，unique就是决定是否unique。。这里假定没人重名，设置index可以让系统自动根据这个字段为基础建立索引
@@ -148,7 +148,7 @@ class Question(db.Model):  # 必须继承declaraive_base得到的那个基类
 
 
 class StandardAnswer(db.Model):
-    __tablename__ = 'standardanswer'
+    __tablename__ = 'StandardAnswer'
     id_s = db.Column(db.Integer, primary_key=True, autoincrement='auto')
     text_s = db.Column(db.Text, nullable=False)
     id_q = db.Column(db.Integer, db.ForeignKey(Question.id_q), nullable=False)
@@ -158,7 +158,7 @@ class StandardAnswer(db.Model):
 
 
 class Answer(db.Model):
-    __tablename__ = 'answer'
+    __tablename__ = 'Answer'
     id_a = db.Column(db.Integer, primary_key=True, autoincrement='auto')
     id_q = db.Column(db.Integer, db.ForeignKey(Question.id_q), nullable=False)
     text_a = db.Column(db.Text, nullable=False)
@@ -168,7 +168,7 @@ class Answer(db.Model):
 
 
 class Score(db.Model):
-    __tablename__ = 'score'
+    __tablename__ = 'Score'
     username = db.Column(db.String(20), db.ForeignKey(User.username), primary_key=True)
     id_a = db.Column(db.Integer, db.ForeignKey(Answer.id_a), primary_key=True)
     time = db.Column(db.String(20), nullable=False)

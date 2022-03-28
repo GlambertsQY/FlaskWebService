@@ -10,7 +10,7 @@ Base = declarative_base()
 
 
 class Question(Base):  # 必须继承declaraive_base得到的那个基类
-    __tablename__ = "question"  # 必须要有__tablename__来指出这个类对应什么表，这个表可以暂时在库中不存在，SQLAlchemy会帮我们创建这个表
+    __tablename__ = "Question"  # 必须要有__tablename__来指出这个类对应什么表，这个表可以暂时在库中不存在，SQLAlchemy会帮我们创建这个表
     id_q = Column(Integer, primary_key=True, autoincrement='auto')  # Column类创建一个字段
     text_q = Column(Text,
                     nullable=False)  # nullable就是决定是否not null，unique就是决定是否unique。。这里假定没人重名，设置index可以让系统自动根据这个字段为基础建立索引
@@ -23,7 +23,7 @@ class Question(Base):  # 必须继承declaraive_base得到的那个基类
 
 
 class StandardAnswer(Base):
-    __tablename__ = 'standardanswer'
+    __tablename__ = 'StandardAnswer'
     id_s = Column(Integer, primary_key=True, autoincrement='auto')
     text_s = Column(Text, nullable=False)
     id_q = Column(Integer, ForeignKey(Question.id_q), nullable=False)
@@ -61,11 +61,11 @@ if __name__ == '__main__':
     #     question = Question(id_q=i + 1, text_q=l1[i], subject='计算机')
     #     session.add(question)
     #     session.commit()
-    # for i in range(0, len(l2)):
-    #     sa = StandardAnswer(id_s=i + 1, text_s=l2[i], id_q=i + 1)
-    #     session.add(sa)
-    #     session.commit()
-    # session.close()
+    for i in range(0, len(l2)):
+        sa = StandardAnswer(id_s=i + 1, text_s=l2[i], id_q=i + 1)
+        session.add(sa)
+        session.commit()
+    session.close()
     print(engine)
     print(session)
     print('End')
